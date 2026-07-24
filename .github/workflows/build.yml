@@ -23,13 +23,15 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Setup Android SDK
+    - name: Setup Android SDK & NDK
       uses: android-actions/setup-android@v3
+      with:
+        ndk-version: '27.3.13750724'
 
-    - name: Nuke NDK and Local Props
+    - name: Clean Local Properties
       run: |
         rm -f local.properties
         find . -name "local.properties" -exec rm -f {} \;
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon -Pandroid.nostrip=true
+      run: ./gradlew assembleDebug --no-daemon
