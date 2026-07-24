@@ -23,15 +23,13 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Setup Android SDK & NDK
+    - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-      with:
-        ndk-version: '27.3.13750724'
 
-    - name: Clean Local Properties
+    - name: Fix CMake and NDK Path
       run: |
-        rm -f local.properties
-        find . -name "local.properties" -exec rm -f {} \;
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
 
     - name: Build Debug APK
       run: ./gradlew assembleDebug --no-daemon
