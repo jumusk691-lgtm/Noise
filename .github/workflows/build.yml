@@ -23,10 +23,16 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Disable External Native Build
+    - name: Setup Android SDK and NDK
+      uses: android-actions/setup-android@v3
+      with:
+        ndk-version: '27.3.13750724'
+        cmake-version: '3.22.1'
+
+    - name: Configure local.properties
       run: |
-        # local.properties में साफ़ कर देते हैं ताकि कोई गंदा पाथ न रहे
-        rm -f local.properties
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon -Pandroid.experimental.skipCompileCpp=true
+      run: ./gradlew assembleDebug --no-daemon
