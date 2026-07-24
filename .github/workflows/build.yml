@@ -23,13 +23,10 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - name: Fix CMake and NDK Path
+    - name: Disable External Native Build
       run: |
-        echo "sdk.dir=$ANDROID_HOME" > local.properties
-        echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
+        # local.properties में साफ़ कर देते हैं ताकि कोई गंदा पाथ न रहे
+        rm -f local.properties
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon
+      run: ./gradlew assembleDebug --no-daemon -Pandroid.experimental.skipCompileCpp=true
