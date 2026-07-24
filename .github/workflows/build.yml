@@ -1,4 +1,4 @@
-name: Build Android App Automatically
+name: Build Android App Fix
 
 on:
   push:
@@ -23,17 +23,10 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Auto Setup Android SDK & NDK
+    - name: Setup Android SDK and Accept Licenses
       uses: android-actions/setup-android@v3
-
-    - name: Let Gradle Auto-Download Missing Components
-      run: |
-        echo "sdk.dir=$ANDROID_HOME" > local.properties
-        # Gradle को खुद आज़ादी देते हैं कि जो न मिले उसे अपने आप डाउनलोड कर ले
-        ./gradlew assembleDebug --no-daemon --info
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
       with:
-        name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        accept-android-sdk-licenses: true
+
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --no-daemon
