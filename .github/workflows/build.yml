@@ -21,16 +21,16 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '21'
+        java-version: '17'
 
     - name: Install NDK and CMake via SDKManager
       run: |
         echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;27.3.13750724" "cmake;3.22.1"
 
-    - name: Write Local Properties
+    - name: Clean Local Properties
       run: |
-        echo "sdk.dir=$ANDROID_HOME" > local.properties
-        echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
+        # पुरानी गंदी local.properties फाइल को उड़ा देते हैं ताकि gradle खुद सही पाथ ले ले
+        rm -f local.properties
 
     - name: Build Debug APK
       run: ./gradlew assembleDebug --no-daemon
