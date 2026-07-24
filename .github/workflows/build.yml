@@ -1,4 +1,4 @@
-name: Build Android App Fix
+name: Build Android App
 
 on:
   push:
@@ -23,10 +23,16 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Setup Android SDK and Accept Licenses
+    - name: Setup Android SDK and NDK
       uses: android-actions/setup-android@v3
       with:
+        ndk-version: '27.3.13750724'
         accept-android-sdk-licenses: true
+
+    - name: Configure local.properties
+      run: |
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
 
     - name: Build Debug APK
       run: ./gradlew assembleDebug --no-daemon
