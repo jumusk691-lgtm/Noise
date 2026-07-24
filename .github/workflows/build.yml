@@ -26,5 +26,10 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Nuke NDK and Local Props
+      run: |
+        rm -f local.properties
+        find . -name "local.properties" -exec rm -f {} \;
+
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon
+      run: ./gradlew assembleDebug --no-daemon -Pandroid.nostrip=true
