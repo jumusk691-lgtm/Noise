@@ -26,9 +26,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Install Build Tools and Platform
+      run: |
+        sdkmanager "build-tools;34.0.0" "platforms;android-34"
+
     - name: Fix NDK Issue
       run: |
-        # local.properties से ndk.dir की लाइन उड़ा देते हैं ताकि यह डिफ़ॉल्ट NDK का रोना न रोए
         if [ -f "local.properties" ]; then
           sed -i '/ndk.dir/d' local.properties
         fi
