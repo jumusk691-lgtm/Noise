@@ -17,10 +17,11 @@ jobs:
         unzip noise.zip
         chmod +x gradlew
 
-    - name: Clean Old CXX and Build Caches
+    - name: Deep Clean CXX and Build Caches
       run: |
-        # पुराने कैश्ड पाथ और जंक फाइल्स को जड़ से साफ़ करते हैं ताकि CMake नया पाथ ले सके
+        # CMake के सारे पुराने जंक और डर्टी मैनिफेस्ट फाइलों को पूरी तरह साफ़ करते हैं
         rm -rf app/.cxx app/build build .gradle
+        find . -name ".cxx" -exec rm -rf {} +
         rm -f local.properties
 
     - name: Set up JDK 17
@@ -34,4 +35,4 @@ jobs:
         echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;27.3.13750724" "cmake;3.22.1"
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon
+      run: ./gradlew clean assembleDebug --no-daemon
