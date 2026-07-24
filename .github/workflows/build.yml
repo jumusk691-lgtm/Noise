@@ -21,16 +21,13 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
 
-    - name: Setup Android SDK, NDK and CMake
-      uses: android-actions/setup-android@v3
-      with:
-        ndk-version: '27.3.13750724'
-        cmake-version: '3.22.1'
-        accept-android-sdk-licenses: true
+    - name: Install NDK and CMake via SDKManager
+      run: |
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "ndk;27.3.13750724" "cmake;3.22.1"
 
-    - name: Force Correct NDK Path in Local Properties
+    - name: Write Local Properties
       run: |
         echo "sdk.dir=$ANDROID_HOME" > local.properties
         echo "ndk.dir=$ANDROID_HOME/ndk/27.3.13750724" >> local.properties
